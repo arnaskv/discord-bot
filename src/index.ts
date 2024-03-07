@@ -1,18 +1,10 @@
-import 'dotenv/config'
-import { Client, GatewayIntentBits } from 'discord.js';
+/* eslint-disable no-console */
+import 'dotenv/config';
+import app from './app';
+import '@/discord';
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+const PORT = 3000;
 
-client.on('ready', () => {
-  console.log(`bot is ready`);
+app.listen(PORT, () => {
+  console.log(`Server is running at http://localhost:${PORT}`);
 });
-
-client.on('messageCreate', async message => {
-//   if (!interaction.isChatInputCommand()) return;
-
-  if (message.content === 'ping') {
-    message.reply({content: 'Pong!'})
-  }
-});
-
-client.login(process.env.TOKEN);
