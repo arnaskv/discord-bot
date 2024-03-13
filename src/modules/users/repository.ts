@@ -10,8 +10,8 @@ export async function create(firstName: string, lastName: string) {
   return db
     .insertInto(TABLE)
     .values({
-      first_name: toTitleCase(firstName),
-      last_name: toTitleCase(lastName),
+      firstName: toTitleCase(firstName),
+      lastName: toTitleCase(lastName),
       username: newUsername,
     })
     .returningAll()

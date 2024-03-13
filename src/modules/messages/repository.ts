@@ -28,7 +28,7 @@ export function findAll() {
 export async function getMessagesByUser(username: string) {
   const messages = await db
     .selectFrom(TABLE)
-    .innerJoin('user', 'user.id', `${TABLE}.user_id`)
+    .innerJoin('user', 'user.id', `${TABLE}.userId`)
     .where('user.username', '==', username)
     .execute();
   return messages;

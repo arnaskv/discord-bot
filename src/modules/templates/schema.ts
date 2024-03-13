@@ -1,16 +1,16 @@
 import { z } from 'zod';
-import type { Sprint } from '@/database';
+import type { Template } from '@/database';
 
-type Record = Sprint;
+type Record = Template;
 const schema = z.object({
   id: z.coerce.number().int().positive(),
-  sprintCode: z.string().min(1).max(100),
-  sprintInfo: z.string().min(1).max(10000),
+  templateText: z.string().min(1).max(10000),
 });
 
 const insertable = schema.omit({
   id: true,
 });
+
 const partial = insertable.partial();
 
 export const parseId = (id: unknown) => schema.shape.id.parse(id);

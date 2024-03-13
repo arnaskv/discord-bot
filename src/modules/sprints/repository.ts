@@ -9,7 +9,7 @@ type RowInsert = Insertable<RowWithoutId>;
 type RowUpdate = Updateable<RowWithoutId>;
 type RowSelect = Selectable<Row>;
 
-export async function getSprintInfo(
+export function getSprintInfo(
   sprintCode: string
 ): Promise<RowSelect | undefined> {
   return db
@@ -19,11 +19,11 @@ export async function getSprintInfo(
     .executeTakeFirst();
 }
 
-export async function create(data: RowInsert): Promise<RowSelect | undefined> {
+export function create(data: RowInsert): Promise<RowSelect | undefined> {
   return db.insertInto(TABLE).values(data).returning(keys).executeTakeFirst();
 }
 
-export async function findById(id: number): Promise<RowSelect | undefined> {
+export function findById(id: number): Promise<RowSelect | undefined> {
   return db
     .selectFrom(TABLE)
     .select(keys)
@@ -31,7 +31,7 @@ export async function findById(id: number): Promise<RowSelect | undefined> {
     .executeTakeFirst();
 }
 
-export async function update(
+export function update(
   id: number,
   partial: RowUpdate
 ): Promise<RowSelect | undefined> {
@@ -47,7 +47,7 @@ export async function update(
     .executeTakeFirst();
 }
 
-export async function remove(id: number) {
+export function remove(id: number) {
   return db
     .deleteFrom(TABLE)
     .where('id', '=', id)

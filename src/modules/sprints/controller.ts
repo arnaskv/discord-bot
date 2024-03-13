@@ -1,18 +1,17 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import { jsonRoute } from '@/utils/middleware';
 import * as sprints from './repository';
 import * as schema from './schema';
 
 const router = Router();
 
-router.route('/').post(async (req: Request, res: Response) => {
-  try {
+router.route('/').post(
+  jsonRoute(async (req) => {
     const body = schema.parseInsertable(req.body);
 
-    const result = await sprints.create(body);
-    res.json(result);
-  } catch (error) {
-    res.json({ error });
-  }
-});
+    return sprints.create(body);
+  }, StatusCodes.CREATED)
+);
 
 export default router;

@@ -5,10 +5,10 @@ import * as discord from '@/discord/utility';
 
 export async function createMessageText(username: string, sprintCode: string) {
   const sprintInfo = await sprints.getSprintInfo(sprintCode);
-  const { templateText } = await templates.getTemplate();
+  const templateText = templates.getRandomTemplate();
 
   const messageText = templateText
-    .replace('{username}', username)
+    .replace('{userInfo}', username)
     .replace('{sprintInfo}', sprintInfo);
 
   return messageText;

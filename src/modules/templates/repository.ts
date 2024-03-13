@@ -1,28 +1,19 @@
+import type { Insertable, Selectable, Updateable } from 'kysely';
 import { sql } from 'kysely';
-import db from '@/database';
+import { keys } from './schema';
+import db, { Template } from '@/database';
 
 const TABLE = 'template';
+type Row = Template;
+type RowWithoutId = Omit<Row, 'id'>;
+type RowInsert = Insertable<RowWithoutId>;
+type RowUpdate = Updateable<RowWithoutId>;
+type RowSelect = Selectable<Row>;
 
-export async function create(templateText: string) {
-  return db
-    .insertInto(TABLE)
-    .values({
-      template_text: templateText,
-    })
-    .returningAll()
-    .executeTakeFirst();
-}
-
-// export async function update() {}
-
-export async function remove(id: number) {
-  return db.deleteFrom(TABLE).where('id', '=', id).executeTakeFirst();
-}
-
-export async function getTemplate() {
+export function getRandomTemplate() {
   return db
     .selectFrom(TABLE)
-    .select('template_text as templateText')
+    .select('templateText')
     .orderBy(sql`RANDOM()`)
     .limit(1)
     .executeTakeFirst()
@@ -34,6 +25,26 @@ export async function getTemplate() {
     });
 }
 
-export async function findAll() {
-  return db.selectFrom(TABLE).selectAll().execute();
+export function findAll(): Promise<RowSelect[] | undefined> {
+  return db.selectFrom(TABLE).select(keys).execute();
+}
+
+export function create(insert: RowInsert): Promise<RowSelect | undefined> {
+  return db.insertInto(TABLE).values(insert).returning(keys).executeTakeFirst();
+}
+
+export function remove(id: number) {
+  return db.deleteFrom(TABLE).where('id', '=', id).executeTakeFirst();
+}
+
+export function update(
+  id: number,
+  partial: RowUpdate
+): Promise<RowSelect | undefined> {
+  return db
+    .updateTable(TABLE)
+    .set(partial)
+    .where('id', '=', id)
+    .returning(keys)
+    .executeTakeFirst();
 }

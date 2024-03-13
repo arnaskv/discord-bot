@@ -1,22 +1,20 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import * as templates from './repository';
+import { jsonRoute } from '@/utils/middleware';
+import { parseInsertable } from './schema';
 
 const router = Router();
 
 router
   .route('/')
-  .post(async (req: Request, res: Response) => {
-    try {
-      const { templateText } = req.body;
+  .post(
+    jsonRoute(async (req) => {
+      const body = parseInsertable(req.body);
 
-      const newTemplate = await templates.create(templateText);
-      res.json(newTemplate);
-    } catch (error) {
-      res.json({ error });
-    }
-  })
-  .get(async (req: Request, res: Response) => {
-    res.json(await templates.findAll());
-  });
+      return templates.create(body);
+    }, StatusCodes.CREATED)
+  )
+  .get(jsonRoute(async () => templates.findAll()));
 
 export default router;

@@ -13,8 +13,8 @@ const gf = new GiphyFetch(GIPHY_API_KEY);
 export async function getGif(searchWord: string) {
   const { data } = await gf.search(searchWord, {
     limit: 1,
-    offset: generateRandomInt(0, 100),
+    offset: generateRandomInt(0, 1000),
   });
-  const url = data[0].images.original.url;
-  return url;
+
+  return data[0].images.original.url;
 }
