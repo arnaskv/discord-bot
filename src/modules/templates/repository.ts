@@ -13,7 +13,7 @@ type RowSelect = Selectable<Row>;
 export function getRandomTemplate() {
   return db
     .selectFrom(TABLE)
-    .select('templateText')
+    .selectAll()
     .orderBy(sql`RANDOM()`)
     .limit(1)
     .executeTakeFirst()

@@ -1,21 +1,25 @@
+import * as users from '@/modules/users/repository';
 import * as templates from '@/modules/templates/repository';
 import * as sprints from '@/modules/sprints/repository';
-import * as giphy from '@/giphy';
 import * as discord from '@/discord/utility';
 
-export async function createMessageText(username: string, sprintCode: string) {
-  const sprintInfo = await sprints.getSprintInfo(sprintCode);
-  const templateText = templates.getRandomTemplate();
+export async function formMessage(username: string, sprintCode: string) {
+  const user = await users.getUserBy(username);
+  const userInfo = `${user.firstName} ${user.lastName} | ${user.username}`;
 
-  const messageText = templateText
-    .replace('{userInfo}', username)
-    .replace('{sprintInfo}', sprintInfo);
+  const sprint = await sprints.getSprintBySprintCode(sprintCode);
+  const template = await templates.getRandomTemplate();
 
-  return messageText;
+  return {
+    userId: user.id,
+    sprintId: sprint.id,
+    templateId: template.id,
+    messageText: template.templateText
+      .replace('{userInfo}', userInfo)
+      .replace('{sprintInfo}', sprint.sprintInfo),
+  };
 }
 
-export async function createEmbeddedGif(gifSearchWord: string) {
-  const gif = await giphy.getGif(gifSearchWord);
-  const embeddedGif = await discord.embedImg(gif);
-  return embeddedGif;
+export async function embedGif(gifUrl: string) {
+  return discord.embedImg(gifUrl);
 }

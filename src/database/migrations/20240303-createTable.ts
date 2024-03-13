@@ -10,10 +10,18 @@ export async function up(db: Kysely<SqliteDatabase>): Promise<void> {
     .execute();
 
   await db.schema
-    .createTable('post')
+    .createTable('message')
     .addColumn('id', 'integer', (col) => col.autoIncrement().primaryKey())
-    .addColumn('user_id', 'integer', (col) => col.notNull())
-    .addColumn('content', 'text', (col) => col.notNull())
+    .addColumn('user_id', 'integer', (col) =>
+      col.references('user.id').notNull()
+    )
+    .addColumn('sprint_id', 'integer', (col) =>
+      col.references('sprint.id').notNull()
+    )
+    .addColumn('template_id', 'integer', (col) =>
+      col.references('template.id').notNull()
+    )
+    .addColumn('gif_url', 'text', (col) => col.notNull())
     .addColumn('created_at', 'text', (col) =>
       col.defaultTo(sql`CURRENT_TIMESPAMP`).notNull()
     )
@@ -23,6 +31,7 @@ export async function up(db: Kysely<SqliteDatabase>): Promise<void> {
     .createTable('sprint')
     .addColumn('id', 'integer', (col) => col.autoIncrement().primaryKey())
     .addColumn('sprint_code', 'text', (col) => col.notNull().unique())
+    .addColumn('sprint_info', 'text', (col) => col.notNull())
     .execute();
 
   await db.schema
@@ -34,5 +43,7 @@ export async function up(db: Kysely<SqliteDatabase>): Promise<void> {
 
 export async function down(db: Kysely<SqliteDatabase>): Promise<void> {
   await db.schema.dropTable('user').execute();
-  await db.schema.dropTable('posts').execute();
+  await db.schema.dropTable('message').execute();
+  await db.schema.dropTable('sprint').execute();
+  await db.schema.dropTable('template').execute();
 }

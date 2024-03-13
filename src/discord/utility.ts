@@ -4,7 +4,7 @@ export function getChannel(client: Client, channelId: string) {
   return client.channels.cache.get(channelId);
 }
 
-export async function embedImg(imgUrl: string) {
+export function embedImg(imgUrl: string) {
   return new EmbedBuilder().setImage(imgUrl);
 }
 

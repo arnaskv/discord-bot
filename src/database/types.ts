@@ -12,6 +12,7 @@ export interface Message {
   userId: number;
   sprintId: number;
   templateId: number;
+  gifUrl: string;
   createdAt: ColumnType<Date, string | undefined, never>;
 }
 

@@ -5,18 +5,18 @@ export async function up(db: Kysely<SqliteDialect>): Promise<void> {
     .insertInto('user')
     .values([
       {
-        firstName: 'Arnas',
-        lastName: 'Kvedaravicius',
+        first_name: 'Arnas',
+        last_name: 'Kvedaravicius',
         username: 'akveda',
       },
       {
-        firstName: 'Kipras',
-        lastName: 'Jankauskas',
+        first_name: 'Kipras',
+        last_name: 'Jankauskas',
         username: 'kjanka',
       },
       {
-        firstName: 'Indre',
-        lastName: 'Mockute',
+        first_name: 'Indre',
+        last_name: 'Mockute',
         username: 'imocku',
       },
     ])
@@ -26,32 +26,35 @@ export async function up(db: Kysely<SqliteDialect>): Promise<void> {
     .insertInto('sprint')
     .values([
       {
-        sprintCode: 'WD-1.1',
-        sprintInfo: 'First steps into programming with python',
+        sprint_code: 'WD-1.1',
+        sprint_info: 'First steps into programming with python',
       },
       {
-        sprintCode: 'WD-1.2',
-        sprintInfo: 'Intermediate programming with python',
+        sprint_code: 'WD-1.2',
+        sprint_info: 'Intermediate programming with python',
       },
       {
-        sprintCode: 'WD-1.3',
-        sprintInfo: 'Object oriented programming',
+        sprint_code: 'WD-1.3',
+        sprint_info: 'Object oriented programming',
       },
     ])
     .execute();
 
-  await db.insertInto('template').values([
-    {
-      templateText:
-        '{userInfo} congratulations on completing {sprintInfo}!\nYou are truly incredible!\n',
-    },
-    {
-      templateText:
-        '{userInfo} congratulations on completing {sprintInfo}!\nYou are the BEEEST!\n',
-    },
-    {
-      templateText:
-        '{userInfo} congratulations on completing {sprintInfo}!\nWe always knew you could do it :)\n',
-    },
-  ]);
+  await db
+    .insertInto('template')
+    .values([
+      {
+        template_text:
+          '{userInfo} congratulations on completing {sprintInfo}!\nYou are truly incredible!\n',
+      },
+      {
+        template_text:
+          '{userInfo} congratulations on completing {sprintInfo}!\nYou are the BEEEST!\n',
+      },
+      {
+        template_text:
+          '{userInfo} congratulations on completing {sprintInfo}!\nWe always knew you could do it :)\n',
+      },
+    ])
+    .execute();
 }

@@ -5,7 +5,9 @@ type Record = Message;
 const schema = z.object({
   id: z.coerce.number().int().positive(),
   userId: z.number().int().positive(),
-  content: z.string().min(1).max(100000),
+  sprintId: z.number().int().positive(),
+  templateId: z.number().int().positive(),
+  gifUrl: z.string().min(1).max(500),
   createdAt: z.date(),
 });
 

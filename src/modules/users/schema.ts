@@ -4,6 +4,8 @@ import type { User } from '@/database';
 type Record = User;
 const schema = z.object({
   id: z.coerce.number().int().positive(),
+  firstName: z.string().min(1).max(100),
+  lastName: z.string().min(1).max(100),
   username: z.string().min(1).max(100),
 });
 
