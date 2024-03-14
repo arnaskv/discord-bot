@@ -1,13 +1,10 @@
-import { Selectable, Insertable, Updateable } from 'kysely';
+import { Selectable } from 'kysely';
 import db, { type User } from '@/database';
 import { keys } from './schema';
 import { toTitleCase } from '@/utils/utils';
 
 const TABLE = 'user';
 type Row = User;
-type RowWithoutId = Omit<Row, 'id'>;
-type RowInsert = Insertable<RowWithoutId>;
-type RowUpdate = Updateable<RowWithoutId>;
 type RowSelect = Selectable<Row>;
 
 export function create(
@@ -32,7 +29,9 @@ export function findAll(): Promise<RowSelect[] | undefined> {
   return db.selectFrom(TABLE).select(keys).execute();
 }
 
-export function getUserBy(username: string): Promise<RowSelect | undefined> {
+export function findByUsername(
+  username: string
+): Promise<RowSelect | undefined> {
   return db
     .selectFrom('user')
     .select(keys)

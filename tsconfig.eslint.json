@@ -4,6 +4,6 @@
     "src/**/*.ts",
     "src/**/*.js",
     "./.eslintrc.cjs",
-    "./vitest.config.js"
+    "./vitest.config.mts"
   ]
 }

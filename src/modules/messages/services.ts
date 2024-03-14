@@ -4,13 +4,13 @@ import * as sprints from '@/modules/sprints/repository';
 import * as discord from '@/discord/utility';
 
 export async function formMessage(username: string, sprintCode: string) {
-  const user = await users.getUserBy(username);
+  const user = await users.findByUsername(username);
   if (!user) {
     throw new Error('User does not exist');
   }
   const userInfo = `${user.firstName} ${user.lastName} | ${user.username}`;
 
-  const sprint = await sprints.getSprintBySprintCode(sprintCode);
+  const sprint = await sprints.findBySprintCode(sprintCode);
   if (!sprint) {
     throw new Error('Sprint does not exist');
   }

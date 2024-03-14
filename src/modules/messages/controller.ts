@@ -40,13 +40,13 @@ router
       if (req.query.username) {
         const username = String(req.query.username);
 
-        return messages.getMessagesByUsername(username);
+        return messages.findByUsername(username);
       }
 
       if (req.query.sprint) {
         const sprintCode = String(req.query.sprint);
 
-        return messages.getMessagesBySprintId(sprintCode);
+        return messages.findBySprintCode(sprintCode);
       }
 
       return messages.findAll();

@@ -17,7 +17,7 @@ export function create(data: RowInsert): Promise<RowSelect | undefined> {
   return db.insertInto(TABLE).values(data).returning(keys).executeTakeFirst();
 }
 
-export function getMessagesByUsername(username: string) {
+export function findByUsername(username: string) {
   return db
     .selectFrom(TABLE)
     .selectAll(TABLE)
@@ -26,7 +26,7 @@ export function getMessagesByUsername(username: string) {
     .execute();
 }
 
-export function getMessagesBySprintId(sprintCode: string) {
+export function findBySprintCode(sprintCode: string) {
   return db
     .selectFrom(TABLE)
     .selectAll(TABLE)

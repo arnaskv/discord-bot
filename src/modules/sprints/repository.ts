@@ -9,7 +9,7 @@ type RowInsert = Insertable<RowWithoutId>;
 type RowUpdate = Updateable<RowWithoutId>;
 type RowSelect = Selectable<Row>;
 
-export function getSprintBySprintCode(
+export function findBySprintCode(
   sprintCode: string
 ): Promise<RowSelect | undefined> {
   return db
