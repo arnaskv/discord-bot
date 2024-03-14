@@ -15,6 +15,50 @@ router
       return templates.create(body);
     }, StatusCodes.CREATED)
   )
-  .get(jsonRoute(async () => templates.findAll()));
+  .get(
+    jsonRoute(async (req) => {
+      if (req.query.id) {
+        const id = Number(req.query.id);
+
+        if (!Number.isInteger(id)) {
+          throw new Error('id must be an integer');
+        }
+
+        return templates.getById(id);
+      }
+
+      return templates.findAll();
+    })
+  )
+  .delete(
+    jsonRoute(async (req) => {
+      if (!req.query.id) {
+        throw new Error('Provide id');
+      }
+      const id = Number(req.query.id);
+
+      if (!Number.isInteger(id)) {
+        throw new Error('Id must be an integer');
+      }
+
+      return templates.remove(id);
+    })
+  )
+  .patch(
+    jsonRoute(async (req) => {
+      if (!req.query.id) {
+        throw new Error('Provide id');
+      }
+      const id = Number(req.query.id);
+
+      if (!Number.isInteger(id)) {
+        throw new Error('Id must be an integer');
+      }
+
+      const body = schema.parsePartial(req.body);
+
+      return templates.update(id, body);
+    })
+  );
 
 export default router;

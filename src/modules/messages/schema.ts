@@ -20,6 +20,7 @@ const updateable = schema
   .omit({
     id: true,
     userId: true,
+    sprintId: true,
     createdAt: true,
   })
   .partial();

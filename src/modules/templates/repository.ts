@@ -10,7 +10,7 @@ type RowInsert = Insertable<RowWithoutId>;
 type RowUpdate = Updateable<RowWithoutId>;
 type RowSelect = Selectable<Row>;
 
-export function getRandomTemplate() {
+export function getRandomTemplate(): Promise<RowSelect> {
   return db
     .selectFrom(TABLE)
     .selectAll()
@@ -25,8 +25,25 @@ export function getRandomTemplate() {
     });
 }
 
-export function findAll(): Promise<RowSelect[] | undefined> {
-  return db.selectFrom(TABLE).select(keys).execute();
+export function findAll(): Promise<RowSelect[]> {
+  return db
+    .selectFrom(TABLE)
+    .select(keys)
+    .execute()
+    .then((templates) => {
+      if (!templates) {
+        throw new Error('No templates exist');
+      }
+      return templates;
+    });
+}
+
+export function getById(id: number): Promise<RowSelect | undefined> {
+  return db
+    .selectFrom(TABLE)
+    .select(keys)
+    .where('id', '=', id)
+    .executeTakeFirst();
 }
 
 export function create(insert: RowInsert): Promise<RowSelect | undefined> {

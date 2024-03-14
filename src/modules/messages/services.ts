@@ -5,9 +5,16 @@ import * as discord from '@/discord/utility';
 
 export async function formMessage(username: string, sprintCode: string) {
   const user = await users.getUserBy(username);
+  if (!user) {
+    throw new Error('User does not exist');
+  }
   const userInfo = `${user.firstName} ${user.lastName} | ${user.username}`;
 
   const sprint = await sprints.getSprintBySprintCode(sprintCode);
+  if (!sprint) {
+    throw new Error('Sprint does not exist');
+  }
+
   const template = await templates.getRandomTemplate();
 
   return {

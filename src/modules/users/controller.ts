@@ -1,22 +1,21 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+import { jsonRoute } from '@/utils/middleware';
 import * as users from './repository';
 
 const router = Router();
 
-router.route('/').post(async (req: Request, res: Response) => {
-  try {
+router.route('/').post(
+  jsonRoute(async (req) => {
     const { firstName } = req.body;
     const { lastName } = req.body;
 
     if (!firstName || !lastName) {
-      throw new Error('Provide first and last names.');
+      throw new Error('Provide first and last name');
     }
 
     const newUser = await users.create(firstName, lastName);
-    res.json(newUser);
-  } catch (error) {
-    res.json({ error });
-  }
-});
+    return newUser;
+  })
+);
 
 export default router;

@@ -35,13 +35,22 @@ router
       return messages.create({ userId, sprintId, templateId, gifUrl });
     }, StatusCodes.CREATED)
   )
-  .get(jsonRoute(async () => messages.findAll()));
+  .get(
+    jsonRoute(async (req) => {
+      if (req.query.username) {
+        const username = String(req.query.username);
 
-// router.route('/:username').get(async (req: Request, res: Response) => {
-//   const { username } = req.params.username;
-//   res.json(messages.getMessagesByUser(username));
-// });
+        return messages.getMessagesByUsername(username);
+      }
 
-// router.route('/:sprint').get();
+      if (req.query.sprint) {
+        const sprintCode = String(req.query.sprint);
+
+        return messages.getMessagesBySprintId(sprintCode);
+      }
+
+      return messages.findAll();
+    })
+  );
 
 export default router;
