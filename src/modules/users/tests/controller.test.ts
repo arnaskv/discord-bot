@@ -15,8 +15,8 @@ vi.mock('../repository', () => ({
   }),
 }));
 
-describe('User Creation', () => {
-  it('should create a new user', async () => {
+describe('user creation', () => {
+  it('should successfully create a new user', async () => {
     const response = await request
       .post('/users')
       .send({ firstName: 'Kevin', lastName: 'Durant' })
@@ -32,15 +32,12 @@ describe('User Creation', () => {
     });
   });
 
-  // it('should return an error for missing data', async () => {
-  //   const response = await request
-  //     .post('/')
-  //     .send({ firstName: 'Jane' })
-  //     .expect(StatusCodes.NOT_FOUND);
+  it('should return an error for missing data', async () => {
+    const response = await request
+      .post('/users')
+      .send({ firstName: 'Jane' })
+      .expect(StatusCodes.BAD_REQUEST);
 
-  //   expect(response.body).toHaveProperty(
-  //     'error',
-  //     'Provide first and last name'
-  //   );
-  // });
+    expect(response.body.error.message).toEqual('Provide first and last name');
+  });
 });

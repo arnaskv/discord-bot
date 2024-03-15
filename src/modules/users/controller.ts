@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { jsonRoute } from '@/utils/middleware';
+import BadRequest from '@/utils/errors/BadRequest';
 import * as users from './repository';
 
 const router = Router();
@@ -13,7 +14,7 @@ router
       const { lastName } = req.body;
 
       if (!firstName || !lastName) {
-        throw new Error('Provide first and last name');
+        throw new BadRequest('Provide first and last name');
       }
 
       const newUser = await users.create(firstName, lastName);

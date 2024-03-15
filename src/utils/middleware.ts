@@ -32,22 +32,3 @@ export function jsonRoute<T>(
     }
   };
 }
-
-export function validataIdParam(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  if (!req.query.id) {
-    throw new Error('Provide id');
-  }
-
-  const id = Number(req.query.id);
-
-  if (!Number.isInteger(id)) {
-    throw new Error('Id must be an integer');
-  }
-
-  req.id = id;
-  next();
-}

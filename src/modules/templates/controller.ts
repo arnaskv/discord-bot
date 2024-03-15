@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { jsonRoute } from '@/utils/middleware';
+import BadRequest from '@/utils/errors/BadRequest';
 import * as templates from './repository';
 import * as schema from './schema';
 
@@ -21,7 +22,7 @@ router
         const id = Number(req.query.id);
 
         if (!Number.isInteger(id)) {
-          throw new Error('id must be an integer');
+          throw new BadRequest('id must be an integer');
         }
 
         return templates.getById(id);
@@ -33,12 +34,12 @@ router
   .delete(
     jsonRoute(async (req) => {
       if (!req.query.id) {
-        throw new Error('Provide id');
+        throw new BadRequest('Provide id');
       }
       const id = Number(req.query.id);
 
       if (!Number.isInteger(id)) {
-        throw new Error('Id must be an integer');
+        throw new BadRequest('Id must be an integer');
       }
 
       return templates.remove(id);
@@ -47,12 +48,12 @@ router
   .patch(
     jsonRoute(async (req) => {
       if (!req.query.id) {
-        throw new Error('Provide id');
+        throw new BadRequest('Provide id');
       }
       const id = Number(req.query.id);
 
       if (!Number.isInteger(id)) {
-        throw new Error('Id must be an integer');
+        throw new BadRequest('Id must be an integer');
       }
 
       const body = schema.parsePartial(req.body);

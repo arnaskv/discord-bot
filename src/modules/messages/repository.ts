@@ -1,4 +1,4 @@
-import type { Insertable, Selectable, Updateable } from 'kysely';
+import type { Insertable, Selectable } from 'kysely';
 import { keys } from './schema';
 import db, { Message } from '@/database';
 
@@ -6,7 +6,6 @@ const TABLE = 'message';
 type Row = Message;
 type RowWithoutId = Omit<Row, 'id'>;
 type RowInsert = Insertable<RowWithoutId>;
-type RowUpdate = Updateable<RowWithoutId>;
 type RowSelect = Selectable<Row>;
 
 export function findAll(): Promise<RowSelect[] | undefined> {

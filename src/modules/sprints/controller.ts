@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { jsonRoute } from '@/utils/middleware';
 import * as sprints from './repository';
 import * as schema from './schema';
+import BadRequest from '@/utils/errors/BadRequest';
 
 const router = Router();
 
@@ -18,7 +19,7 @@ router
   .get(
     jsonRoute(async (req) => {
       if (!req.query.id) {
-        throw new Error('Provide id');
+        throw new BadRequest('Provide id');
       }
 
       const id = Number(req.query.id);
@@ -33,12 +34,12 @@ router
   .patch(
     jsonRoute(async (req) => {
       if (!req.query.id) {
-        throw new Error('Provide id');
+        throw new BadRequest('Provide id');
       }
       const id = Number(req.query.id);
 
       if (!Number.isInteger(id)) {
-        throw new Error('Id must be an integer');
+        throw new BadRequest('Id must be an integer');
       }
 
       const body = schema.parsePartial(req.body);
@@ -48,12 +49,12 @@ router
   .delete(
     jsonRoute(async (req) => {
       if (!req.query.id) {
-        throw new Error('Provide id');
+        throw new BadRequest('Provide id');
       }
       const id = Number(req.query.id);
 
       if (!Number.isInteger(id)) {
-        throw new Error('Id must be an integer');
+        throw new BadRequest('Id must be an integer');
       }
 
       return sprints.remove(id);
