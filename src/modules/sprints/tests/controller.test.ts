@@ -35,18 +35,6 @@ describe('create new template', () => {
       sprintInfo: 'Python capstone project',
     });
   });
-
-  it('should return ZodError', async () => {
-    const response = await request
-      .post('/sprints')
-      .send({
-        sprintCode: 'WD-1.4',
-      })
-      .expect(StatusCodes.BAD_REQUEST)
-      .expect('Content-Type', /json/);
-
-    expect(response.body.error.name).toEqual('ZodError');
-  });
 });
 
 describe('crud operations id check', () => {

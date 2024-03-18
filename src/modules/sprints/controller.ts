@@ -25,7 +25,7 @@ router
       const id = Number(req.query.id);
 
       if (!Number.isInteger(id)) {
-        throw new Error('Id must be an integer');
+        throw new BadRequest('Id must be an integer');
       }
 
       return sprints.findById(id);

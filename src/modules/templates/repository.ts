@@ -2,6 +2,7 @@ import type { Insertable, Selectable, Updateable } from 'kysely';
 import { sql } from 'kysely';
 import { keys } from './schema';
 import db, { Template } from '@/database';
+import NotFound from '@/utils/errors/NotFound';
 
 const TABLE = 'template';
 type Row = Template;
@@ -19,7 +20,7 @@ export function getRandomTemplate(): Promise<RowSelect> {
     .executeTakeFirst()
     .then((template) => {
       if (!template) {
-        throw new Error('No templates exist');
+        throw new NotFound('No templates exist');
       }
       return template;
     });
@@ -32,18 +33,24 @@ export function findAll(): Promise<RowSelect[]> {
     .execute()
     .then((templates) => {
       if (!templates) {
-        throw new Error('No templates exist');
+        throw new NotFound('No templates exist');
       }
       return templates;
     });
 }
 
-export function getById(id: number): Promise<RowSelect | undefined> {
+export function findById(id: number): Promise<RowSelect> {
   return db
     .selectFrom(TABLE)
     .select(keys)
     .where('id', '=', id)
-    .executeTakeFirst();
+    .executeTakeFirst()
+    .then((template) => {
+      if (!template) {
+        throw new NotFound('Template with id does not exist');
+      }
+      return template;
+    });
 }
 
 export function create(insert: RowInsert): Promise<RowSelect | undefined> {
@@ -51,17 +58,29 @@ export function create(insert: RowInsert): Promise<RowSelect | undefined> {
 }
 
 export function remove(id: number) {
-  return db.deleteFrom(TABLE).where('id', '=', id).executeTakeFirst();
+  return db
+    .deleteFrom(TABLE)
+    .where('id', '=', id)
+    .executeTakeFirst()
+    .then((template) => {
+      if (!template) {
+        throw new NotFound('Template with id does not exist');
+      }
+      return template;
+    });
 }
 
-export function update(
-  id: number,
-  partial: RowUpdate
-): Promise<RowSelect | undefined> {
+export function update(id: number, partial: RowUpdate): Promise<RowSelect> {
   return db
     .updateTable(TABLE)
     .set(partial)
     .where('id', '=', id)
     .returning(keys)
-    .executeTakeFirst();
+    .executeTakeFirst()
+    .then((template) => {
+      if (!template) {
+        throw new NotFound('Template with id does not exist');
+      }
+      return template;
+    });
 }

@@ -25,7 +25,7 @@ router
           throw new BadRequest('id must be an integer');
         }
 
-        return templates.getById(id);
+        return templates.findById(id);
       }
 
       return templates.findAll();

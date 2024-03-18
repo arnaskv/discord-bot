@@ -7,6 +7,7 @@ import * as messages from './repository';
 import * as discord from '@/discord/utility';
 import client from '@/discord';
 import * as giphy from '@/giphy';
+import BadRequest from '@/utils/errors/BadRequest';
 
 const { CHANNEL_ID } = process.env;
 
@@ -27,7 +28,7 @@ router
       const embeddedGif = await embedGif(gifUrl);
 
       if (!CHANNEL_ID) {
-        throw new Error('Provide channel id in enviromental variables');
+        throw new BadRequest('Provide channel id in enviromental variables');
       }
 
       discord.sendMessage(client, CHANNEL_ID, messageText, embeddedGif);

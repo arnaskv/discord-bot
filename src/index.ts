@@ -1,7 +1,5 @@
 /* eslint-disable no-console */
-import 'dotenv/config';
 import app from './app';
-import '@/discord';
 
 const PORT = 3000;
 
